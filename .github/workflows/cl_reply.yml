@@ -1,0 +1,44 @@
+name: cl_reply
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "13 23 * * *"
+
+
+jobs:
+  reply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          # Semantic version range syntax or exact version of a Python version
+          python-version: '3.8'
+          # Optional - x64 or x86 architecture, defaults to x64
+          architecture: 'x64'
+      - name: checkout actions
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install git
+          sudo apt-get -y install python3-pip
+          sudo apt-get -y install python3-setuptools
+
+      - name: install env
+        run:
+          pip3 install requests onetimepass
+
+      - name: run cl_reply.py
+        env:
+          # required
+          UNAME: ${{ secrets.UNAME }}
+          UPASS: ${{ secrets.UPASS }}
+          # optional,required when use pass
+          SECRET: ${{ secrets.SECRET }}
+          CR_ARGS: ${{ secrets.CR_ARGS }}
+          # optional
+          DEBUG: ${{ secrets.DEBUG }}
+          TIMES: ${{ secrets.TIMES }}
+        run:
+          python3 cl_reply.py
