@@ -3,7 +3,7 @@ name: cl_reply
 on:
   workflow_dispatch:
   schedule:
-    - cron: "13 23 * * *"
+    - cron: "3 4 * * *"
 
 
 jobs:
